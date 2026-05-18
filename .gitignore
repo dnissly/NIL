@@ -26,3 +26,5 @@ coords-backup.json
 /CURVEDTEXT_Jerseys/
 __pycache__/
 *.pyc
+/output/
+binv0.5/

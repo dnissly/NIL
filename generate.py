@@ -383,7 +383,8 @@ def process_back(row, team_folder, coords):
     # Respect coords.json exactly (no Y shifting for long names)
     rotation_angle = coords.get("NamePlate", {}).get("rotation", 0)
     nameplate_obj = dict(coords["NamePlate"])  # do not modify coords
-    nameplate_img = render_nameplate(player_name.upper(), font_path, nameplate_obj, rotation_angle, 0)
+    formatted_name = apply_nameplate_casing(player_name)
+    nameplate_img = render_nameplate(formatted_name, font_path, nameplate_obj, rotation_angle, 0)
 
     x0, y0, x1, y1 = [int(round(c)) for c in coords["NamePlate"]["coords"]]
     box_width = int(round(x1 - x0))
@@ -563,6 +564,29 @@ def extract_last_name_and_suffix(full_name):
         else:
             last_name = parts[-1]
     return f"{last_name} {suffix}".strip()
+
+
+def apply_nameplate_casing(name: str) -> str:
+    """Uppercase the name while keeping known lowercase patterns (e.g., Mc)."""
+    if not name:
+        return ""
+
+    def _format_token(token: str) -> str:
+        # Ignore tokens that are purely separators or non-alpha
+        if not any(ch.isalpha() for ch in token):
+            return token
+
+        upper = token.upper()
+
+        # Handle Mc* prefix: keep the 'c' lowercase, rest uppercase
+        if upper.startswith("MC") and len(upper) >= 3 and upper[2].isalpha():
+            return "Mc" + upper[2:]
+
+        return upper
+
+    # Split on spaces, hyphens, or apostrophes but keep separators
+    parts = re.split(r"(\s+|[-']+)", name.strip())
+    return "".join(_format_token(p) if p and not p.isspace() else p for p in parts)
 
 def extract_name_and_number(jersey_characters):
     """Extract alphabetic name and numeric jersey value from the mixed field."""

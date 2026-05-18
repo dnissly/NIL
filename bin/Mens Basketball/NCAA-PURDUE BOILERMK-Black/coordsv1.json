@@ -1,0 +1,73 @@
+{
+  "FrontNumber": {
+    "coords": [
+      154,
+      400,
+      387,
+      572
+    ],
+    "rotation": -1.2,
+    "number_folder": "C:/Users/DaveNissly/Desktop/Git/NIL/bin/Mens Basketball/Purdue-Black\\number_front"
+  },
+  "BackNumber": {
+    "coords": [
+      159,
+      207,
+      437,
+      448
+    ],
+    "rotation": 0.5,
+    "number_folder": "C:/Users/DaveNissly/Desktop/Git/NIL/bin/Mens Basketball/Purdue-Black\\number_back"
+  },
+  "NamePlate": {
+    "coords": [
+      162,
+      110,
+      436,
+      177
+    ],
+    "color": "#d2b886",
+    "rotation": 0.8,
+    "spacing_factor": 0.0
+  },
+  "FLShoulder": {
+    "coords": [
+      59,
+      11,
+      78,
+      40
+    ],
+    "rotation": -11.0,
+    "number_folder": "C:/Users/DaveNissly/Desktop/Git/NIL/bin/Mens Basketball/Purdue-Black\\number_shoulder"
+  },
+  "FRShoulder": {
+    "coords": [
+      633,
+      17,
+      656,
+      35
+    ],
+    "rotation": 14.0,
+    "number_folder": "C:/Users/DaveNissly/Desktop/Git/NIL/bin/Mens Basketball/Purdue-Black\\number_shoulder"
+  },
+  "BLShoulder": {
+    "coords": [
+      60,
+      32,
+      80,
+      57
+    ],
+    "rotation": -9.0,
+    "number_folder": "C:/Users/DaveNissly/Desktop/Git/NIL/bin/Mens Basketball/Purdue-Black\\number_shoulder"
+  },
+  "BRShoulder": {
+    "coords": [
+      646,
+      27,
+      664,
+      49
+    ],
+    "rotation": 12.0,
+    "number_folder": "C:/Users/DaveNissly/Desktop/Git/NIL/bin/Mens Basketball/Purdue-Black\\number_shoulder"
+  }
+}

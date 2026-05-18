@@ -1,0 +1,26 @@
+{
+  "FrontNumber": [200,300,478,548],
+  "BackNumber": [190,260,475,515],
+  "NamePlate": {
+    "coords": [175, 170, 490, 240],
+    "color": "#ffffff",
+    "rotation": -0.5,
+    "spacing_factor": 0.02
+  },
+  "FLShoulder": {
+    "coords": [-40,145,100,230],
+    "rotation": -15
+  },
+  "FRShoulder": {
+    "coords": [580,145,698,230],
+    "rotation": 15
+  },
+  "BLShoulder": {
+    "coords": [-40,145,100,230],
+    "rotation": -15
+  },
+  "BRShoulder": {
+    "coords": [580,145,698,230],
+    "rotation": 15
+  }
+}

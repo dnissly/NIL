@@ -337,33 +337,34 @@ def process_front(row, team_folder, coords):
         front_number_coords = front_number_obj
         front_number_rotation = coords.get("NamePlate", {}).get("rotation", 0)
 
-    number_img = composite_numbers(player_number, number_folder, front_number_coords)
-
-    if front_number_rotation != 0:
-        number_img = number_img.rotate(front_number_rotation, expand=True, resample=Image.BICUBIC, fillcolor=(0,0,0,0))
-    x0, y0, x1, y1 = [int(round(c)) for c in front_number_coords]
-    # Center if rotated
-    if front_number_rotation != 0:
-        num_w, num_h = number_img.size
-        box_w = int(round(x1 - x0))
-        box_h = int(round(y1 - y0))
-        paste_x = x0 + (box_w - num_w) // 2
-        paste_y = y0 + (box_h - num_h) // 2
-    else:
-        paste_x, paste_y = x0, y0
-
-    # Special case: shift single-digit '4' left by 30px on front
-    if str(player_number).strip() == '4':
-        paste_x -= 30
-    # Special case: shift single-digit '1' left by 5px on front
-    elif str(player_number).strip() == '1':
-        paste_x -= 5
-
     temp = blank_img.copy()
-    temp.paste(number_img, (paste_x, paste_y), number_img)
-    # Add front shoulder numbers
-    add_shoulder_number(temp, player_number, number_folder, coords["FLShoulder"])
-    add_shoulder_number(temp, player_number, number_folder, coords["FRShoulder"])
+    if str(player_number).strip():
+        number_img = composite_numbers(player_number, number_folder, front_number_coords)
+
+        if front_number_rotation != 0:
+            number_img = number_img.rotate(front_number_rotation, expand=True, resample=Image.BICUBIC, fillcolor=(0,0,0,0))
+        x0, y0, x1, y1 = [int(round(c)) for c in front_number_coords]
+        # Center if rotated
+        if front_number_rotation != 0:
+            num_w, num_h = number_img.size
+            box_w = int(round(x1 - x0))
+            box_h = int(round(y1 - y0))
+            paste_x = x0 + (box_w - num_w) // 2
+            paste_y = y0 + (box_h - num_h) // 2
+        else:
+            paste_x, paste_y = x0, y0
+
+        # Special case: shift single-digit '4' left by 30px on front
+        if str(player_number).strip() == '4':
+            paste_x -= 30
+        # Special case: shift single-digit '1' left by 5px on front
+        elif str(player_number).strip() == '1':
+            paste_x -= 5
+
+        temp.paste(number_img, (paste_x, paste_y), number_img)
+        # Add front shoulder numbers
+        add_shoulder_number(temp, player_number, number_folder, coords["FLShoulder"])
+        add_shoulder_number(temp, player_number, number_folder, coords["FRShoulder"])
     alpha = blank_img.split()[-1]
     temp.putalpha(alpha)
     out_name = f"{row['Name']}-3.png"
@@ -407,28 +408,29 @@ def process_back(row, team_folder, coords):
         back_number_coords = back_number_obj
         back_number_rotation = coords.get("NamePlate", {}).get("rotation", 0)
 
-    number_img = composite_numbers(player_number, number_folder, back_number_coords)
-    if back_number_rotation != 0:
-        number_img = number_img.rotate(back_number_rotation, expand=True, resample=Image.BICUBIC, fillcolor=(0,0,0,0))
-    x0, y0, x1, y1 = [int(round(c)) for c in back_number_coords]
-    if back_number_rotation != 0:
-        num_w, num_h = number_img.size
-        box_w = int(round(x1 - x0))
-        box_h = int(round(y1 - y0))
-        paste_x_num = x0 + (box_w - num_w) // 2
-        paste_y_num = y0 + (box_h - num_h) // 2
-    else:
-        paste_x_num, paste_y_num = x0, y0
+    if str(player_number).strip():
+        number_img = composite_numbers(player_number, number_folder, back_number_coords)
+        if back_number_rotation != 0:
+            number_img = number_img.rotate(back_number_rotation, expand=True, resample=Image.BICUBIC, fillcolor=(0,0,0,0))
+        x0, y0, x1, y1 = [int(round(c)) for c in back_number_coords]
+        if back_number_rotation != 0:
+            num_w, num_h = number_img.size
+            box_w = int(round(x1 - x0))
+            box_h = int(round(y1 - y0))
+            paste_x_num = x0 + (box_w - num_w) // 2
+            paste_y_num = y0 + (box_h - num_h) // 2
+        else:
+            paste_x_num, paste_y_num = x0, y0
 
-    # Special cases
-    if str(player_number).strip() == '4':
-        paste_x_num -= 25
-    elif str(player_number).strip() == '1':
-        paste_x_num -= 0
+        # Special cases
+        if str(player_number).strip() == '4':
+            paste_x_num -= 25
+        elif str(player_number).strip() == '1':
+            paste_x_num -= 0
 
-    temp.paste(number_img, (paste_x_num, paste_y_num), number_img)
-    add_shoulder_number(temp, player_number, number_folder, coords["BLShoulder"])
-    add_shoulder_number(temp, player_number, number_folder, coords["BRShoulder"])
+        temp.paste(number_img, (paste_x_num, paste_y_num), number_img)
+        add_shoulder_number(temp, player_number, number_folder, coords["BLShoulder"])
+        add_shoulder_number(temp, player_number, number_folder, coords["BRShoulder"])
     alpha = blank_img.split()[-1]
     temp.putalpha(alpha)
     out_name = f"{row['Name']}-2.png"
@@ -437,6 +439,8 @@ def process_back(row, team_folder, coords):
     print(f"Saved {out_path}")
 
 def add_shoulder_number(base_img, number_str, number_folder, shoulder_obj):
+    if not str(number_str).strip():
+        return
     coords = shoulder_obj["coords"]
     rotation = shoulder_obj.get("rotation", 0)
     x0, y0, x1, y1 = [int(round(c)) for c in coords]
